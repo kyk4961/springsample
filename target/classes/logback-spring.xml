@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+	
+	<springProfile name="!local">
+		<springProperty scope="context" name="log.directory" source="log.directory" defaultValue="/skt/log"/>
+		<springProperty scope="context" name="service.name" source="service.name" defaultValue="nuguop-web"/>
+		<include resource="file-appender.xml" />
+
+		<logger name="AccessLogger" additivity="false">
+			<level value="INFO"/>
+			<appender-ref ref="ACCESS" />
+		</logger>
+	</springProfile>
+	
+	<logger name="jdbc" level="OFF" /> 
+	
+	<logger name="jdbc.resultsettable" level="DEBUG" additivity="false">
+		<springProfile name="local">
+			<appender-ref ref="CONSOLE"/>
+		</springProfile>
+
+		<springProfile name="!local">
+			<appender-ref ref="FILE"/>
+		</springProfile>
+	</logger>
+	
+	<logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
+		<springProfile name="local">
+			<appender-ref ref="CONSOLE"/>
+		</springProfile>
+
+		<springProfile name="!local">
+			<appender-ref ref="FILE"/>
+		</springProfile>
+	</logger>
+	
+	<logger name="org.springframework" level="INFO"  />
+	
+	<root level="INFO">
+		<springProfile name="local">
+			<appender-ref ref="CONSOLE"/>
+		</springProfile>
+
+		<springProfile name="!local">
+			<appender-ref ref="FILE"/>
+		</springProfile>
+	</root>
+</configuration>
